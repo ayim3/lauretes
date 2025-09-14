@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Laura ❤</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:wght@300;400;500&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #FFF5F5;
+            overflow: hidden;
+        }
+        
+        .handwriting {
+            font-family: 'Dancing Script', cursive;
+        }
+        
+        .heart-beat {
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .envelope {
+            transition: all 0.8s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+            transform-style: preserve-3d;
+        }
+        
+        .envelope.open {
+            transform: rotateX(180deg) translateY(-50px);
+            opacity: 0;
+        }
+        
+        .letter {
+            transform: scale(0.8);
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+        }
+        
+        .letter.show {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        .paper-texture {
+            background-image: url("http://static.photos/vintage/1200x630/42");
+            background-size: cover;
+            background-blend-mode: overlay;
+            background-color: rgba(255, 245, 245, 0.9);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center">
+    <div id="app" class="relative w-full h-screen flex items-center justify-center">
+        <!-- Envelope -->
+        <div id="envelope" class="envelope absolute cursor-pointer" data-aos="zoom-in" data-aos-duration="1000">
+            <div class="bg-gradient-to-br from-pink-200 to-pink-300 p-8 rounded-lg shadow-xl w-64 h-48 flex flex-col items-center justify-center border-2 border-pink-300">
+                <i data-feather="mail" class="w-12 h-12 text-pink-500 mb-4"></i>
+                <h2 class="handwriting text-3xl text-pink-600 mb-2">Para a Laura <span class="heart-beat inline-block">❤</span></h2>
+                <p class="text-pink-500 text-sm">(Clique para abrir)</p>
+            </div>
+        </div>
+        
+        <!-- Letter -->
+        <div id="letter" class="letter absolute hidden">
+            <div class="paper-texture p-8 rounded-lg shadow-lg w-80 max-w-full min-h-64 flex flex-col" style="background-color: #FFF9F9;">
+                <h3 class="handwriting text-3xl text-pink-600 mb-6">Minha querida Laura,</h3>
+                <p class="text-gray-700 mb-4 leading-relaxed" data-aos="fade-up" data-aos-delay="300">
+                    nao quero nunca jamais te deixar tristonha ta bo.
+                </p>
+                <p class="text-gray-700 mb-4 leading-relaxed" data-aos="fade-up" data-aos-delay="500">
+                    eu adoro, eu amo conversar com vc!!! vc eh muuuito especial pra eu, de verdade.
+                </p>
+                <p class="text-gray-700 mb-6 leading-relaxed" data-aos="fade-up" data-aos-delay="700">
+                    nao sei mt bem pq to fazendo isso, mas to. espero que goste pq idunno
+                </p>
+                <p class="text-gray-700 mb-6 leading-relaxed" data-aos="fade-up" data-aos-delay="700">
+                    levo tudo que vc fala sobre vc e tudo mais pra dentro deu ta, juro nunca esquecer nada disso
+                </p>
+                <div class="mt-auto" data-aos="fade-up" data-aos-delay="900">
+                    <p class="handwriting text-xl text-pink-600">Com todo o meu carinho,</p>
+                    <p class="handwriting text-2xl text-pink-600 mt-2">euzinhoo</p>
+                </div>
+                <button id="closeBtn" class="mt-6 text-pink-500 hover:text-pink-600 transition-colors flex items-center justify-center">
+                    <i data-feather="x" class="mr-2"></i> Fechar
+                </button>
+            </div>
+        </div>
+        
+        <!-- Floating hearts background -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <template id="heart-template">
+                <div class="absolute text-pink-200 opacity-50" style="font-size: 20px;">❤</div>
+            </template>
+        </div>
+    </div>
+
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out-quart'
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+            
+            const envelope = document.getElementById('envelope');
+            const letter = document.getElementById('letter');
+            const closeBtn = document.getElementById('closeBtn');
+            
+            // Create floating hearts
+            const heartContainer = document.querySelector('.absolute.inset-0');
+            const heartTemplate = document.getElementById('heart-template');
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = heartTemplate.content.cloneNode(true).querySelector('div');
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.top = `${Math.random() * 100}%`;
+                heart.style.transform = `scale(${Math.random() * 0.5 + 0.5}) rotate(${Math.random() * 360}deg)`;
+                heart.style.animation = `float ${Math.random() * 10 + 10}s linear infinite`;
+                heart.style.animationDelay = `${Math.random() * 5}s`;
+                heartContainer.appendChild(heart);
+            }
+            
+            // Add floating animation to style
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float {
+                    0% {
+                        transform: translateY(0) rotate(0deg);
+                        opacity: 0.5;
+                    }
+                    50% {
+                        opacity: 0.8;
+                    }
+                    100% {
+                        transform: translateY(-100vh) rotate(360deg);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Envelope click handler
+            envelope.addEventListener('click', function() {
+                envelope.classList.add('open');
+                
+                setTimeout(() => {
+                    envelope.classList.add('hidden');
+                    letter.classList.remove('hidden');
+                    
+                    setTimeout(() => {
+                        letter.classList.add('show');
+                    }, 50);
+                }, 800);
+            });
+            
+            // Close button handler
+            closeBtn.addEventListener('click', function() {
+                letter.classList.remove('show');
+                
+                setTimeout(() => {
+                    letter.classList.add('hidden');
+                    envelope.classList.remove('open', 'hidden');
+                    
+                    setTimeout(() => {
+                        envelope.style.opacity = '1';
+                    }, 50);
+                }, 800);
+            });
+        });
+    </script>
+</body>
+</html>
